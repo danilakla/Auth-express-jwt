@@ -1,6 +1,3 @@
-const ApiError = require('../util/api-error');
-
-
 class AuthController {
 
   async registration(req, res, next) {
