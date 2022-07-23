@@ -15,7 +15,6 @@ const UserSchema = new Schema({
   },
   activationLink: {
     type: String,
-    unique: true,
   },
   isActivated: {
     type: Boolean,
@@ -25,13 +24,22 @@ const UserSchema = new Schema({
   resetPasswordExpires: Date,
 })
 
-UserSchema.pre("save", function (next) {
+UserSchema.pre("save", async function (next) {
   if (!this.isModified('password')) {
+    console.log('s1');
+    next();
+    console.log('s2');
+
+  } else {
+
+    const salt = await bcrypt.genSalt(10);
+    this.password = await bcrypt.hash(this.password, salt);
+    console.log(this.password);
+    this.activationLink = uuid.v4();
     next();
   }
-  this.password = bcrypt.hash(this.password, 4);
-  this.activationLink = uuid.v4();
-  next();
+
+
 })
 
 
