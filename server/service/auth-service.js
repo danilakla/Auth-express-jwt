@@ -10,7 +10,7 @@ class AuthService {
     }
     const user = await userModel.create({ email, password });
     await mailService.sendActivationOnEmail(email, `${process.env.API_URL}/api/activate/${user.activationLink}`);
-    
+     
   }
 }
 
