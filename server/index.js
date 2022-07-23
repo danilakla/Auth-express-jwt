@@ -1,9 +1,9 @@
 require('dotenv').config()
 const express = require('express');
-
 const cookieparser = require('cookie-parser');
 const cors = require('cors');
 const connectDB = require('./config/conection-db');
+const error = require('./middleware/error-middleware');
 const app = express();
 
 app.use(express.json());
@@ -14,7 +14,7 @@ app.use(cors({
   optionsSuccessStatus:
     { code: 200, message: 'success' },
 }))
-
+app.use(error)
 
 const startServer = async () => {
   await connectDB();
