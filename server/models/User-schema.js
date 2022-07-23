@@ -15,6 +15,14 @@ const UserSchema = new mongoose.Model({
     select: false,
     maxlength: 10,
   },
+  activationLink: {
+    type: String,
+    unique: true,
+  },
+  isActivated: {
+    type: Boolean,
+    default: false,
+  },
   resetPasswordToken: String,
   resetPasswordExpires: Date,
 })
@@ -24,7 +32,8 @@ UserSchema.pre("save", function (next) {
     next();
   }
   this.password = await bcrypt.hash(this.password, 4);
-
+  this.activationLink = uuid.v4();
+  next();
 })
 
 
