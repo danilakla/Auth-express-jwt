@@ -14,6 +14,10 @@ class AuthService {
     const tokens = await tokenService.generateTokens({ ...payLoad });
     const refreshToken = await tokenService.saveToken(userID, tokens.refreshToken)
 
+    return {
+      ...tokenService,
+      user: payLoad
+    }
 
   }
 }
