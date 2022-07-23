@@ -1,6 +1,7 @@
 const userModel = require('../models/User-schema');
 const ApiError = require('../util/api-error');
 const UserDTO = require('../DTO/user-payload')
+const tokenService = require('../service/token-service')
 class AuthService {
   async registration(email, password) {
     const candidate = await userModel.findOne({ email });
