@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
+const {Schema,model} = require('mongoose');
 
-TokenSchema = new mongoose.Schema({
+TokenSchema = new Schema({
   userId: {
     type: Schema.Types.ObjectId,
     ref: 'User'

@@ -1,19 +1,17 @@
-const mongoose = require('mongoose');
+const { Schema, model } = require('mongoose');
 const bcrypt = require('bcrypt');
-const UserSchema = new mongoose.Model({
+const uuid = require('uuid');
+const UserSchema = new Schema({
   email: {
     type: String,
-    required: [true, 'Please enter a valid email address'],
+    required: true,
     unique: true,
-    match: [/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-      "Please provide a valid email",]
+
   },
   password: {
     type: String,
-    required: [true, 'Please enter a password'],
-    minlength: 4,
+    required: true,
     select: false,
-    maxlength: 10,
   },
   activationLink: {
     type: String,
@@ -31,11 +29,11 @@ UserSchema.pre("save", function (next) {
   if (!this.isModified('password')) {
     next();
   }
-  this.password = await bcrypt.hash(this.password, 4);
+  this.password = bcrypt.hash(this.password, 4);
   this.activationLink = uuid.v4();
   next();
 })
 
 
 
-module.exports = mongoose.model('User', UserSchema)
+module.exports = model('User', UserSchema)

@@ -5,6 +5,7 @@ const cors = require('cors');
 const connectDB = require('./config/conection-db');
 const error = require('./middleware/error-middleware');
 const app = express();
+const router = require('./routes/authentication-router')
 
 app.use(express.json());
 app.use(cookieparser());
@@ -14,6 +15,7 @@ app.use(cors({
   optionsSuccessStatus:
     { code: 200, message: 'success' },
 }))
+app.use('/api', router)
 app.use(error)
 
 const startServer = async () => {
