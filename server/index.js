@@ -6,7 +6,8 @@ const connectDB = require('./config/conection-db');
 const error = require('./middleware/error-middleware');
 const app = express();
 const routerAuth = require('./routes/authentication-router');
-const routerActivate= require('./routes/activate-router');
+const routerActivate = require('./routes/activate-router');
+const routerLogout = require('./routes/logout-router');
 
 
 app.use(express.json());
@@ -19,6 +20,7 @@ app.use(cors({
 }))
 app.use('/api', routerAuth);
 app.use('/api', routerActivate)
+app.use('/api', routerLogout)
 
 app.use(error)
 

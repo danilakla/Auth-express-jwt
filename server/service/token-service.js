@@ -23,6 +23,11 @@ class TokenService {
 
   }
 
+  async deleteToken(refreshToken) {
+    await tokenModel.findOneAndDelete({ refreshToken });
+
+  }
+
 }
 
 module.exports = new TokenService();
