@@ -24,6 +24,27 @@ class AuthService {
     }
 
   }
+
+  async login(email, password) {
+
+    const user = await userModel.findOne({ email }).select("+password");
+    if (!user) {
+      throw new ApiError.badRequestError('user with such email does not found')
+    }
+
+    const isMatch = await user.matchPassword(password);
+
+    if (!isMatch) {
+      throw new ApiError.badRequestError('password does not match');
+    }
+    const payload = new UserDTO(user);
+    const tokens = await tokenService.generateTokens({ ...payload })
+    await tokenService.saveToken(payload.id, tokens.refreshToken)
+    return {
+      ...tokens,
+      user: user
+    }
+  }
 }
 
 module.exports = new AuthService();

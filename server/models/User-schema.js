@@ -26,22 +26,20 @@ const UserSchema = new Schema({
 
 UserSchema.pre("save", async function (next) {
   if (!this.isModified('password')) {
-    console.log('s1');
     next();
-    console.log('s2');
 
   } else {
 
-    const salt = await bcrypt.genSalt(10);
-    this.password = await bcrypt.hash(this.password, salt);
-    console.log(this.password);
+
+    this.password = await bcrypt.hash(this.password, 4);
     this.activationLink = uuid.v4();
     next();
   }
 
 
 })
-
-
+UserSchema.methods.matchPassword = async function (password) {
+  return await bcrypt.compare(password, this.password);
+}
 
 module.exports = model('User', UserSchema)
