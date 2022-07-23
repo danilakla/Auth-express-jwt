@@ -42,7 +42,7 @@ class AuthService {
     await tokenService.saveToken(payload.id, tokens.refreshToken)
     return {
       ...tokens,
-      user: user
+      user: payload
     }
   }
 }
