@@ -3,6 +3,7 @@ const ApiError = require('../util/api-error');
 const UserDTO = require('../DTO/user-payload');
 const tokenService = require('../service/token-service');
 const mailService = require('../service/mail-service');
+const crypto = require('crypto');
 class AuthService {
   async registration(email, password) {
     const candidate = await userModel.findOne({ email });
@@ -44,6 +45,41 @@ class AuthService {
       ...tokens,
       user: payload
     }
+  }
+  async update(password, resetPasswordToken) {
+
+    const hashToken = crypto
+      .createHash("sha256")
+      .update(resetPasswordToken)
+      .digest("hex");
+
+    console.log(hashToken);
+    const user = await userModel.findOne({
+      resetPasswordToken: hashToken,
+      resetPasswordExpires: { $gt: Date.now() }
+    });
+    console.log(user);
+    if (!user) {
+      throw new ApiError.badRequestError('user with such token does not found');
+    }
+    user.password = password;
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpires = undefined;
+    await user.save();
+
+    return user;
+  }
+  async getResetTokenPassword(email) {
+    const candidate = await userModel.findOne({ email })
+    if (!candidate) {
+      throw new ApiError.unAuthorizedError();
+    }
+    const resetToken = await candidate.getResetTokenPassword()
+    await candidate.save();
+    await mailService.sendActivationOnEmail(email, `${process.env.API_URL}api/passwordReset/${resetToken}`);
+
+    return resetToken
+
   }
 }
 
