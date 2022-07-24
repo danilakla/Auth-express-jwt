@@ -14,6 +14,13 @@ const UserSchema = new Schema({
     required: true,
     select: false,
   },
+
+  roles: [
+    {
+      type: String,
+      ref: 'Role',
+    }
+  ],
   activationLink: {
     type: String,
   },

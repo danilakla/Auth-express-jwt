@@ -10,7 +10,7 @@ class AuthService {
     if (candidate) {
       throw new ApiError.badRequestError('user with such email already exists')
     }
-    const user = await userModel.create({ email, password });
+    const user = await userModel.create({ email, password, roles: "User" });
     console.log(2);
 
     await mailService.sendActivationOnEmail(email, `${process.env.API_URL}api/activate/${user.activationLink}`);
