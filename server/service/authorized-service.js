@@ -10,21 +10,14 @@ class AuthorizedService {
   }
   async refresh(refreshToken) {
     const userData = await tokenService.validationRefreshToken(refreshToken);
-
     const tokenFromDb = await tokenService.findToken(refreshToken);
 
     if (!userData || !tokenFromDb) {
       throw new ApiError.unAuthorizedError()
     }
     const user = await UserModel.findOne({ _id: userData.id })
-
-    const payload = new UserDto(user);
-    const tokens = await tokenService.generateTokens({ ...payload });
-    await tokenService.saveToken(payload.id, tokens.refreshToken)
-    return {
-      user: payload,
-      ...tokens
-    }
+    const playloadAndTokens = await tokenService.initializationTokens(user)
+    return playloadAndTokens;
   }
 }
 

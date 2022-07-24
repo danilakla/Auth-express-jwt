@@ -8,7 +8,6 @@ module.exports = function (accessRoles) {
 
       const userPayload = checkTokenHeader(authorizationHeader)
       let hasRole = false;
-      console.log(userPayload);
       userPayload.roles.forEach(element => {
         if (accessRoles.includes(element)) {
           return hasRole = true;

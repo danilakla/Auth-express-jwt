@@ -1,10 +1,11 @@
 const jwt = require('jsonwebtoken')
 const tokenModel = require('../models/RefreshToken-schema');
-const 
+const UserDto = require('../DTO/user-payload')
 class TokenService {
 
-  async registrationAndCreationTokens() {
-    const payload = new UserDTO(user);
+  async initializationTokens(user) {
+
+    const payload = new UserDto(user);
     const tokens = await this.generateTokens({ ...payload })
     await this.saveToken(payload.id, tokens.refreshToken)
     return {
@@ -25,11 +26,9 @@ class TokenService {
   async saveToken(userId, refreshToken) {
     const userToken = await tokenModel.findOne({ userId })
     if (userToken) {
-      console.log(refreshToken);
       userToken.refreshToken = refreshToken;
       return await userToken.save();
     }
-    console.log(2);
 
     await tokenModel.create({ userId, refreshToken })
 

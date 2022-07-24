@@ -8,7 +8,6 @@ class ActivateController {
       const activationLink = req.params.linkActivate;
 
       await activationService.activateUser(activationLink);
-      console.log(13312312312);
       return res.json('success')
     } catch (error) {
       console.log(error);
