@@ -21,6 +21,11 @@ app.use((req, res, next) => {
   console.log(312321123);
   next();
 })
+app.use((req, res, next) => {
+  console.log(312321123);
+  next();
+})
+
 
 app.use('/api', routerAuth);
 app.use('/api', routerActivate)
