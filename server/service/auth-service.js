@@ -1,8 +1,7 @@
 const userModel = require('../models/User-schema');
 const ApiError = require('../util/api-error');
-const UserDTO = require('../DTO/user-payload');
 const tokenService = require('../service/token-service');
-const mailService = require('../service/mail-service');
+const mailService = require('./mail-service');
 const crypto = require('crypto');
 class AuthService {
   async registration(email, password) {
