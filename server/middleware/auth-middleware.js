@@ -7,7 +7,6 @@ module.exports = function (req, res, next) {
     const authorizationHeader = req.headers.authorization;
     console.log(authorizationHeader);
     const userPayload = checkTokenHeader(authorizationHeader)
-
     req.user = userPayload
 
     next()

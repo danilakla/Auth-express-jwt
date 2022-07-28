@@ -42,6 +42,7 @@ function Login() {
 
   }
   const testGetUsers = async () => {
+    console.log('all');
     const res2 = await $api.get('/all');
     console.log(res2);
     getUsers(JSON.stringify(res2.data))
@@ -88,8 +89,8 @@ function Login() {
         onFailure={onFailure}
       />
 
-      <button onClick={testGetUser}>click one user for authorized user</button>
-      <button onClick={testGetUsers}>click one user for admin</button>
+      <button onClick={testGetUser}>User</button>
+      <button onClick={testGetUsers}>Admin</button>
 
       <h1>{users}</h1>
     </div>
