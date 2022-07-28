@@ -12,10 +12,8 @@ module.exports = function (authorizationHeader) {
 
   }
   const userData = tokenService.validationAccessToken(accessToken)
-  console.log(userData);
   if (!userData) {
     throw ApiError.unAuthorizedError()
   }
-  console.log(3333333);
   return userData
 }

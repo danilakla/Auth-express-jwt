@@ -87,17 +87,18 @@ class AuthController {
 
         const playloadAndTokens = await tokenService.initializationTokens(user)
 
-        res.cookie('refreshtoken', playloadAndTokens.refreshToken, {
+        res.cookie('refreshToken', playloadAndTokens.refreshToken, {
           httpOnly: true,
           maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
         })
 
         res.json({ token: playloadAndTokens.accessToken })
       } else {
-        const newUser = await userModel.create({ email, password, });
+        const newUser = await userModel.create({ email, password, roles: 'User' });
+        await mailService.sendActivationOnEmail(email, `${process.env.API_URL}api/activate/${newUser.activationLink}`);
 
         const playloadAndTokens = await tokenService.initializationTokens(newUser)
-        res.cookie('refreshtoken', playloadAndTokens.refreshToken, {
+        res.cookie('refreshToken', playloadAndTokens.refreshToken, {
           httpOnly: true,
           maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
         })
@@ -109,6 +110,7 @@ class AuthController {
       return res.status(500).json({ msg: err.message })
     }
   }
+  //in development
   async facebookLogin(req, res, next) {
     try {
       const { accessToken, userID } = req.body
@@ -137,8 +139,8 @@ class AuthController {
 
         res.json({ token: playloadAndTokens.accessToken })
       } else {
-        const newUser = await userModel.create({ email, password, });
-
+        const newUser = await userModel.create({ email, password, roles: 'User' });
+        console.log(newUser);
         const playloadAndTokens = await tokenService.initializationTokens(newUser)
         res.cookie('refreshtoken', playloadAndTokens.refreshToken, {
           httpOnly: true,

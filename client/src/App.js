@@ -1,9 +1,10 @@
 import './App.css';
 import Login from './components/login';
-import { gapi } from 'gapi-script'
-import { useEffect } from 'react'
+import { Route, BrowserRouter } from 'react-router-dom'
+import Switch from 'react-router-dom'
+import { BrowserRouter as Router } from 'react-router-dom'
+import Body from './components/Body';
 
-const client_id = '543959122831-p0lud62rc95l6daf174aco57fkc2srt9.apps.googleusercontent.com'
 function App() {
   // useEffect(() => {
   //   function start() {
@@ -19,9 +20,11 @@ function App() {
   // })
 
   return (
-    <div className="App">
-      <Login></Login>
-    </div>
+    <Router>
+      <div className="App">
+        <Body />
+      </div>
+    </Router>
   );
 }
 

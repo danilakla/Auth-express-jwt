@@ -22,12 +22,12 @@ app.use(cors({
 
 }))
 
-
 app.get('/api/one', midl, async (req, res, next) => {
   const users = await UserModel.find().limit(1);
   res.json(users);
   next();
 })
+
 
 app.get('/api/all', roleMidl, async (req, res, next) => {
   const users = await UserModel.find();

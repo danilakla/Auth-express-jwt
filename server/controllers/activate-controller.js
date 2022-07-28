@@ -1,5 +1,4 @@
 const activationService = require('../service/activate-service')
-
 class ActivateController {
 
   async activateUser(req, res, next) {
@@ -8,7 +7,8 @@ class ActivateController {
       const activationLink = req.params.linkActivate;
 
       await activationService.activateUser(activationLink);
-      return res.json('success')
+
+      return res.redirect('http://localhost:3000/:dsadasdas')
     } catch (error) {
       console.log(error);
       next(error)
