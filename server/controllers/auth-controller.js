@@ -87,7 +87,7 @@ class AuthController {
 
         const playloadAndTokens = await tokenService.initializationTokens(user)
 
-        res.cookie('refreshtoken', playloadAndTokens.refreshToken, {
+        res.cookie('refreshToken', playloadAndTokens.refreshToken, {
           httpOnly: true,
           maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
         })
@@ -98,7 +98,7 @@ class AuthController {
         await mailService.sendActivationOnEmail(email, `${process.env.API_URL}api/activate/${newUser.activationLink}`);
 
         const playloadAndTokens = await tokenService.initializationTokens(newUser)
-        res.cookie('refreshtoken', playloadAndTokens.refreshToken, {
+        res.cookie('refreshToken', playloadAndTokens.refreshToken, {
           httpOnly: true,
           maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
         })

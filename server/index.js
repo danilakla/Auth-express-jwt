@@ -25,6 +25,8 @@ app.use(cors({
 
 
 app.get('/api/one', midl, async (req, res, next) => {
+  console.log(req);
+  console.log('akkkkkkk');
   const users = await UserModel.find().limit(1);
   res.json(users);
   next();
