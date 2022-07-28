@@ -11,6 +11,7 @@ router.put('/passwordReset/:resetToken', authController.updatePassword)
 
 // Social Login
 router.post('/google_login', authController.googleLogin)
+router.post('/facebook_login', authController.facebookLogin)
 
 
 
