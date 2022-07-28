@@ -16,6 +16,6 @@ module.exports = function (authorizationHeader) {
   if (!userData) {
     throw ApiError.unAuthorizedError()
   }
-  console.log(3);
+  console.log(3333333);
   return userData
 }

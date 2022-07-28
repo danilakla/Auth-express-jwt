@@ -3,6 +3,8 @@ const authorizedService = require('../service/authorized-service');
 class AuthorizedController {
   async logoutUser(req, res, next) {
     try {
+      console.log(312);
+
       const { refreshToken } = req.cookies;
       await authorizedService.logoutUser(refreshToken);
 

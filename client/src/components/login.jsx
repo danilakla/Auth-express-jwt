@@ -36,7 +36,13 @@ function Login() {
 
 
   const testGetUser = async () => {
-    const res2 = await $api.get('/');
+    const res2 = await $api.get('/one');
+    console.log(res2);
+    getUsers(JSON.stringify(res2.data))
+
+  }
+  const testGetUsers = async () => {
+    const res2 = await $api.get('/all');
     console.log(res2);
     getUsers(JSON.stringify(res2.data))
 
@@ -59,7 +65,7 @@ function Login() {
     localStorage.setItem('token', res.data.accessToken)
   }
   const logout = async () => {
-    await $api.post('/registration', { password, email: name });
+    await $api.delete('/logout', { password, email: name });
     localStorage.removeItem('token')
   }
   return (
@@ -82,7 +88,9 @@ function Login() {
         onFailure={onFailure}
       />
 
-      <button onClick={testGetUser}>click</button>
+      <button onClick={testGetUser}>click one user for authorized user</button>
+      <button onClick={testGetUsers}>click one user for admin</button>
+
       <h1>{users}</h1>
     </div>
   )

@@ -10,6 +10,8 @@ const routerAuth = require('./routes/authentication-router');
 const routerActivate = require('./routes/activate-router');
 const routerAuthorized = require('./routes/authorized-router');
 const midl = require('./middleware/auth-middleware')
+const roleMidl = require('./middleware/role-auth-middleware')
+
 const UserModel = require('./models/User-schema')
 app.use(express.json());
 app.use(cookieparser());
@@ -19,12 +21,20 @@ app.use(cors({
   optionSuccessStatus: 200, //!!!
 
 }))
-app.get('/api', midl, async (req, res, next) => {
-  console.log(312321123);
+
+
+app.get('/api/one', midl, async (req, res, next) => {
+  const users = await UserModel.find().limit(1);
+  res.json(users);
+  next();
+})
+
+app.get('/api/all', roleMidl, async (req, res, next) => {
   const users = await UserModel.find();
   res.json(users);
   next();
 })
+
 
 
 app.use('/api', routerAuth);
