@@ -9,6 +9,8 @@ const app = express();
 const routerAuth = require('./routes/authentication-router');
 const routerActivate = require('./routes/activate-router');
 const routerAuthorized = require('./routes/authorized-router');
+const midl = require('./middleware/auth-middleware')
+const UserModel = require('./models/User-schema')
 app.use(express.json());
 app.use(cookieparser());
 app.use(cors({
@@ -17,12 +19,10 @@ app.use(cors({
   optionSuccessStatus: 200, //!!!
 
 }))
-app.use((req, res, next) => {
+app.get('/api', midl, async (req, res, next) => {
   console.log(312321123);
-  next();
-})
-app.use((req, res, next) => {
-  console.log(312321123);
+  const users = await UserModel.find();
+  res.json(users);
   next();
 })
 

@@ -70,8 +70,6 @@ class AuthController {
 
   async googleLogin(req, res, next) {
     try {
-      console.log(1);
-      console.log(req);
       const { tokenId } = req.body
 
       const verify = await client.verifyIdToken({ idToken: tokenId, audience: client_id }) //mail 
@@ -84,29 +82,30 @@ class AuthController {
 
       if (!email_verified) return res.status(400).json({ msg: "Email verification failed." })
 
-      const user = await userModel.findOne({ email })
+      const user = await userModel.findOne({ email }).select("+password");
 
       if (user) {
         const isMatch = await user.matchPassword(password);
         if (!isMatch) return res.status(400).json({ msg: "Password is incorrect." })
 
         const playloadAndTokens = await tokenService.initializationTokens(user)
-        res.cookie('refreshtoken', playloadAndTokens.accessToken, {
+
+        res.cookie('refreshtoken', playloadAndTokens.refreshToken, {
           httpOnly: true,
           maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
         })
 
-        res.json({ msg: "Login success!" })
+        console.log(playloadAndTokens.accessToken);
+        res.json({ token: playloadAndTokens.accessToken })
       } else {
         const newUser = await userModel.create({ email, password, });
 
         const playloadAndTokens = await tokenService.initializationTokens(newUser)
-        res.cookie('refreshtoken', playloadAndTokens.accessToken, {
+        res.cookie('refreshtoken', playloadAndTokens.refreshToken, {
           httpOnly: true,
           maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
         })
-
-        res.json({ msg: "Login success!" })
+        res.json({ token: playloadAndTokens.accessToken })
       }
 
 
