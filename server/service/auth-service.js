@@ -64,7 +64,7 @@ class AuthService {
 
   }
   async setRefreshTokenInCookie() {
-return 
+    return
   }
 }
 

@@ -1,6 +1,7 @@
-import { GoogleLogin } from 'react-google-login';
+import { GoogleLogin, GoogleLogout } from 'react-google-login';
 import axios from 'axios';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { gapi } from "gapi-script"
 
 
 export const API_URL = 'http://localhost:4000/api'
@@ -33,8 +34,8 @@ $api.interceptors.response.use((config) => {
     }
   }
 })
-const client_id = '543959122831-p0lud62rc95l6daf174aco57fkc2srt9.apps.googleusercontent.com'
 function Login() {
+
   const [users, getUsers] = useState('')
   const [name, getName] = useState('')
   const [password, getPssword] = useState('')
@@ -42,7 +43,7 @@ function Login() {
   const onSuccess = async (response) => {
 
     try {
-
+      console.log(response);
       const res = await $api.post('/google_login', { tokenId: response.tokenId });
       console.log();
       localStorage.setItem('token', res.data.token)
@@ -62,20 +63,14 @@ function Login() {
   }
   const testGetUsers = async () => {
     console.log('all');
-    const res2 = await $api.get('/all');
-    console.log(res2);
-    getUsers(JSON.stringify(res2.data))
+    const res1 = await $api.get('/all');
+    console.log(res1);
+    getUsers(JSON.stringify(res1.data))
 
   }
 
 
-  const onFailure = (res) => {
-    console.log(res);
-  }
 
-  const onSuccessFacebook = async (response) => {
-    console.log(response);
-  }
 
   const registration = async (e) => {
     e.preventDefault();
@@ -96,6 +91,20 @@ function Login() {
   const forgotPassword = async () => {
 
   }
+  const onFailure = async (res) => {
+    console.log(res);
+  }
+
+  useEffect(() => {
+    function start() {
+      gapi.client.init({
+        clientId: '77144797068-s64eirkru9foga32she7mnlettoi7361.apps.googleusercontent.com',
+        scope: ['email', 'name']
+      });
+    }
+
+    gapi.load('client:auth2', start);
+  }, []);
   return (
     <div id='sighInButton'>
       <form>
@@ -111,9 +120,12 @@ function Login() {
         <input type="submit" value="Submit" onClick={(e) => registration(e)} />
       </form>
       <GoogleLogin
-        clientId={client_id}
+        clientId='77144797068-s64eirkru9foga32she7mnlettoi7361.apps.googleusercontent.com'
         onSuccess={onSuccess}
-        onFailure={onFailure} />
+        onFailure={onFailure}
+        plagin_name=''
+      />
+
       <div ></div>
 
       <button onClick={forgotPassword}>forgot password</button>

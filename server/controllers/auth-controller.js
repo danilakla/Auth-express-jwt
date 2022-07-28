@@ -9,7 +9,7 @@ const tokenService = require('../service/token-service');
 const { google } = require('googleapis');
 const userDto = require('../DTO/user-payload');
 const { OAuth2 } = google.auth
-const client_id = '543959122831-p0lud62rc95l6daf174aco57fkc2srt9.apps.googleusercontent.com'
+const client_id = '77144797068-s64eirkru9foga32she7mnlettoi7361.apps.googleusercontent.com'
 const CLIENT_URL = 'http://localhost:3000'
 const client = new OAuth2(client_id)
 ////////////////////////////////////////////////////////////////////////
@@ -72,8 +72,8 @@ class AuthController {
     try {
       const { tokenId } = req.body
       const verify = await client.verifyIdToken({ idToken: tokenId, audience: client_id }) //mail 
-
-      const { email_verified, email, name, picture } = verify.payload
+      console.log(0)
+      const { email_verified, email } = verify.payload
       const password = email + 'dasdas' //google secroe
       // const passwordHash = await bcrypt.hash(password, 12)
 
@@ -82,6 +82,7 @@ class AuthController {
       const user = await userModel.findOne({ email }).select("+password");
 
       if (user) {
+        console.log(123);
         const isMatch = await user.matchPassword(password);
         if (!isMatch) return res.status(400).json({ msg: "Password is incorrect." })
 
