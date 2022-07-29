@@ -48,21 +48,20 @@ class AuthController {
     try {
       const { email } = req.body;
       const resetTokenPassword = await authService.getResetTokenPassword(email);
-      res.json(resetTokenPassword);
+      res.json(resetTokenPassword)
     } catch (error) {
       next(error);
     }
   }
   async updatePassword(req, res, next) {
+    console.log(123);
     try {
-      const resetTokenPassword = req.params.resetToken
-      const { password } = req.body;
-      const userupdate = await authService.update(password, resetTokenPassword)
-      res.status(201).json({
-        success: true,
-        data: "Password Updated Success",
-        userupdate
-      });
+
+      const { password, tokenRes } = req.body;
+      const userupdate = await authService.update(password, tokenRes)
+      console.log(userupdate);
+      return res.json('ok')
+
     } catch (error) {
       next(error);
     }

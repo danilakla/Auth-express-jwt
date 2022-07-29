@@ -8,7 +8,7 @@ class ActivateController {
 
       await activationService.activateUser(activationLink);
 
-      return res.redirect('http://localhost:3000/:dsadasdas')
+      return res.redirect('http://localhost:3000')
     } catch (error) {
       console.log(error);
       next(error)

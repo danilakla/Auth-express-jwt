@@ -58,7 +58,7 @@ class AuthService {
     }
     const resetToken = await candidate.getResetTokenPassword()
     await candidate.save();
-    await mailService.sendActivationOnEmail(email, `${process.env.API_URL}api/passwordReset/${resetToken}`);
+    await mailService.sendActivationOnEmail(email, `${process.env.HOST_CLIENT}login/${resetToken}`);
 
     return resetToken
 
