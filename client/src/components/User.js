@@ -1,7 +1,12 @@
 import React, { useState } from 'react'
 import $api from '../http/axios'
-
+import PayButton from './PayButton'
 function User() {
+  const bdGoods = {
+    id: 1,
+    name: 'phone',
+    price: 200
+  }
   const [users, getUsers] = useState('')
   const [helpInfo, setInfo] = useState('')
 
@@ -45,7 +50,11 @@ function User() {
       <div ></div>
 
       < h1 > {users}</h1 >
-
+      <br></br>
+      <br></br>
+      <br></br>
+      <br></br>
+      <PayButton cartItems={bdGoods} />
 
 
     </div >

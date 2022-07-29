@@ -11,7 +11,7 @@ const routerActivate = require('./routes/activate-router');
 const routerAuthorized = require('./routes/authorized-router');
 const midl = require('./middleware/auth-middleware')
 const roleMidl = require('./middleware/role-auth-middleware')
-
+const routerPayment = require('./routes/payment')
 const UserModel = require('./models/User-schema')
 app.use(express.json());
 app.use(cookieparser());
@@ -40,6 +40,7 @@ app.get('/api/all', roleMidl(['Admin']), async (req, res, next) => {
 app.use('/api', routerAuth);
 app.use('/api', routerActivate)
 app.use('/api', routerAuthorized)
+app.use('/api', routerPayment)
 
 app.use(errorMiddleware)
 
