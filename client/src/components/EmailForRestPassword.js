@@ -5,10 +5,13 @@ import { Link } from 'react-router-dom'
 import $api from '../http/axios'
 
 function EmailSender() {
+  const [helpInfo, setInfo] = useState('')
+
   const [email, getPssword] = useState('')
   const sendEmail = async (e) => {
     e.preventDefault();
     const res = await $api.post('/forgotPassword', { email })
+    setInfo('check email')
     console.log(res);
   }
 
@@ -24,8 +27,7 @@ function EmailSender() {
 
         <input type="submit" value="Submit" onClick={(e) => sendEmail(e)} />
       </form>
-      <Link to="/">Back to login</Link>
-
+      <h2>{helpInfo}</h2>
     </div >
   )
 }

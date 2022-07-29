@@ -4,6 +4,7 @@ import EmailSender from './EmailForRestPassword';
 import SignIn from './SignIn'
 import NewPassword from './NewPassword';
 import Login from './Login';
+import User from './User';
 
 function Body() {
   return (
@@ -11,6 +12,7 @@ function Body() {
       <Routes>
         <Route path="/" element={<SignIn />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/userInterface" element={<User />} />
 
         <Route path="/login/:resetToken" element={<NewPassword />} />
         <Route path="/login/sendEmail" element={<EmailSender />} />

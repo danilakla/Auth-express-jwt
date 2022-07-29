@@ -2,8 +2,9 @@ import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 
 import $api from '../http/axios'
-
 function Login() {
+  const [helpInfo, setInfo] = useState('')
+
   const [password, getPssword] = useState('')
   const [email, getName] = useState('')
   const login = async (e) => {
@@ -11,6 +12,7 @@ function Login() {
 
     const res = await $api.post('/login', { password, email });
     console.log(res);
+    setInfo('you enter account')
     localStorage.setItem('token', res.data.accessToken)
   }
   return (
@@ -28,13 +30,14 @@ function Login() {
           <input type="text" name="password" value={password} onChange={(e) => getPssword(e.target.value)} />
         </label>
         <div></div>
+        <h2>{helpInfo}</h2>
+        <div></div>
 
         <input type="submit" value="Submit" onClick={(e) => login(e)} />
       </form>
 
       <Link to="/login/sendEmail">Forgot your password?</Link>
       <div ></div>
-      <Link to="/">Back to sign in</Link>
 
     </div >
   )
