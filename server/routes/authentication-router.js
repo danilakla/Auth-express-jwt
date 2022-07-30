@@ -1,10 +1,17 @@
 const router = require('express').Router();
 const authController = require('../controllers/auth-controller')
+const { body } = require('express-validator');
 
 
-router.post('/registration', authController.registration);
+router.post('/registration',
+  body('email').isEmail(),
+  body('password').isLength({ min: 3, max: 32 }),
+  authController.registration);
 
-router.post('/login', authController.login)
+router.post('/login',
+  body('email').isEmail(),
+  body('password').isLength({ min: 3, max: 32 })
+  , authController.login)
 
 router.post('/forgotPassword', authController.forgotPassword);
 
@@ -17,7 +24,6 @@ router.get('/activate/:linkActivate', authController.activateUser)
 router.post('/google-registration', authController.googleRegistration)
 router.post('/google-login', authController.googleLogin)
 
-router.post('/facebook_login', authController.facebookLogin)
 
 
 

@@ -13,8 +13,14 @@ function Login() {
 
     const res = await $api.post('/login', { password, email });
     console.log(res);
-    setInfo('you enter account')
-    localStorage.setItem('token', res.data.accessToken)
+    if (res.data.error) {
+      setInfo(res.data.message)
+
+    } else {
+      setInfo('you enter account')
+
+      localStorage.setItem('token', res.data.accessToken)
+    }
   }
 
 
@@ -25,9 +31,14 @@ function Login() {
       const res = await $api.post('/google-login', { tokenId: response.tokenId });
       console.log();
       localStorage.setItem('token', res.data.accessToken)
-      setInfo('you enter account')
+      if (res.data.error) {
+        setInfo(res.data.message)
 
-      console.log(res);
+      } else {
+        setInfo('you enter account')
+
+        localStorage.setItem('token', res.data.accessToken)
+      }
     } catch (error) {
       console.log(error);
     }

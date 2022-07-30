@@ -1,15 +1,10 @@
 const authService = require('../service/auth-service');
-const mailService = require('../service/mail-service');
-
+const validationBody = require('../util/validation-body')
 
 ////////////////////////////////////////////////////////////////////////
-const userModel = require('../models/User-schema');
-const tokenService = require('../service/token-service');
-
 const { google } = require('googleapis');
 const { OAuth2 } = google.auth
-const client_id = '77144797068-s64eirkru9foga32she7mnlettoi7361.apps.googleusercontent.com'
-const CLIENT_URL = 'http://localhost:3000'
+const client_id = process.env.GOOGLE_CLIENT_ID
 const client = new OAuth2(client_id)
 ////////////////////////////////////////////////////////////////////////
 
@@ -17,12 +12,13 @@ class AuthController {
 
   async registration(req, res, next) {
     try {
+      if (!validationBody(req)) {
+        res.json({ message: 'invalid data', error: true });
+      }
+
       const { email, password } = req.body;
       const userData = await authService.registration(email, password);
-      res.cookie('refreshToken', userData.refreshToken, {
-        maxAge: 30 * 24 * 60 * 60 * 1000, //  30 days 
-        httpOnly: true,
-      });
+
       res.json(userData);
     } catch (error) {
       next(error);
@@ -30,6 +26,9 @@ class AuthController {
   }
   async login(req, res, next) {
     try {
+      if (!validationBody(req)) {
+        res.json({ message: 'invalid data', error: true });
+      }
       const { email, password } = req.body;
       const userData = await authService.login(email, password);
       res.cookie('refreshToken', userData.refreshToken, {
@@ -72,7 +71,7 @@ class AuthController {
     try {
 
       const { password, tokenRes } = req.body;
-      const userupdate = await authService.update(password, tokenRes)
+      await authService.update(password, tokenRes)
       return res.json('ok')
 
     } catch (error) {
@@ -89,6 +88,8 @@ class AuthController {
       if (!email_verified) return res.status(400).json({ msg: "Email verification failed." })
 
       const userDataSignUp = await authService.registration(email, password);
+
+
       res.cookie('refreshToken', userDataSignUp.refreshToken, {
         maxAge: 30 * 24 * 60 * 60 * 1000, //  30 days 
         httpOnly: true,
@@ -98,7 +99,8 @@ class AuthController {
 
 
     } catch (err) {
-      return res.status(500).json({ msg: err.message })
+      next(err)
+
     }
   }
 
@@ -112,6 +114,7 @@ class AuthController {
       if (!email_verified) return res.status(400).json({ msg: "Email verification failed." })
 
       const userDataSignUp = await authService.login(email, password);
+
       res.cookie('refreshToken', userDataSignUp.refreshToken, {
         maxAge: 30 * 24 * 60 * 60 * 1000, //  30 days 
         httpOnly: true,
@@ -121,51 +124,9 @@ class AuthController {
 
 
     } catch (err) {
-      return res.status(500).json({ msg: err.message })
+      next(err)
     }
   }
-  //in development
-  async facebookLogin(req, res, next) {
-    try {
-      const { accessToken, userID } = req.body
 
-      const URL = `https://graph.facebook.com/v2.9/${userID}/?fields=id,name,email,picture&access_token=${accessToken}`
-
-      const data = await fetch(URL).then(res => res.json()).then(res => { return res })
-
-      const { email, name, picture } = data
-
-      const password = email + 'dasdas'
-      if (!email_verified) return res.status(400).json({ msg: "Email verification failed." })
-
-      const user = await userModel.findOne({ email }).select("+password");
-
-      if (user) {
-        const isMatch = await user.matchPassword(password);
-        if (!isMatch) return res.status(400).json({ msg: "Password is incorrect." })
-
-        const playloadAndTokens = await tokenService.initializationTokens(user)
-
-        res.cookie('refreshtoken', playloadAndTokens.refreshToken, {
-          httpOnly: true,
-          maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
-        })
-
-        res.json({ token: playloadAndTokens.accessToken })
-      } else {
-        const newUser = await userModel.create({ email, password, roles: 'User' });
-        const playloadAndTokens = await tokenService.initializationTokens(newUser)
-        res.cookie('refreshtoken', playloadAndTokens.refreshToken, {
-          httpOnly: true,
-          maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
-        })
-        res.json({ token: playloadAndTokens.accessToken })
-      }
-
-
-    } catch (err) {
-      return res.status(500).json({ msg: err.message })
-    }
-  }
 }
 module.exports = new AuthController();

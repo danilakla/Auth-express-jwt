@@ -7,7 +7,7 @@ class AuthService {
   async registration(email, password) {
     const candidate = await userModel.findOne({ email });
     if (candidate) {
-      throw new ApiError.badRequestError('user with such email already exists')
+      throw  ApiError.badRequestError('user with such email already exists')
     }
     const user = await userModel.create({ email, password, roles: "User" });
     await mailService.sendActivationOnEmail(email, `${process.env.API_URL}api/activate/${user.activationLink}`);
@@ -20,12 +20,12 @@ class AuthService {
     const user = await userModel.findOne({ email }).select("+password");
 
     if (!user) {
-      throw new ApiError.badRequestError('user with such email does not found')
+      throw  ApiError.badRequestError('user with such email does not found')
     }
     const isMatch = await user.matchPassword(password);
 
     if (!isMatch) {
-      throw new ApiError.badRequestError('password does not match');
+      throw  ApiError.badRequestError('password does not match');
     }
     const playloadAndTokens = await tokenService.initializationTokens(user)
     return playloadAndTokens
@@ -54,7 +54,7 @@ class AuthService {
       resetPasswordExpires: { $gt: Date.now() }
     });
     if (!user) {
-      throw new ApiError.badRequestError('user with such token does not found');
+      throw  ApiError.badRequestError('user with such token does not found');
     }
     user.password = password;
     user.resetPasswordToken = undefined;
@@ -66,7 +66,7 @@ class AuthService {
   async getResetTokenPassword(email) {
     const candidate = await userModel.findOne({ email })
     if (!candidate) {
-      throw new ApiError.unAuthorizedError();
+      throw  ApiError.unAuthorizedError();
     }
     const resetToken = await candidate.getResetTokenPassword()
     await candidate.save();

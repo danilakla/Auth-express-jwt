@@ -1,6 +1,6 @@
 const ApiError = require('../util/api-error');
 const tokenService = require('./token-service')
-const UserModel = require('../models/User-schema');
+const userModel = require('../models/User-schema');
 
 class AuthorizedService {
   async logoutUser(refreshToken) {
@@ -13,9 +13,9 @@ class AuthorizedService {
     const tokenFromDb = await tokenService.findToken(refreshToken);
 
     if (!userData || !tokenFromDb) {
-      throw new ApiError.unAuthorizedError()
+      throw  ApiError.unAuthorizedError()
     }
-    const user = await UserModel.findOne({ _id: userData.id })
+    const user = await userModel.findOne({ _id: userData.id })
     const playloadAndTokens = await tokenService.initializationTokens(user)
     return playloadAndTokens;
   }
