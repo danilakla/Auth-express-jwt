@@ -12,14 +12,11 @@ function User() {
 
   const testGetUser = async () => {
     const res2 = await $api.get('/one');
-    console.log(res2);
     getUsers(JSON.stringify(res2.data))
 
   }
   const testGetUsers = async () => {
-    console.log('all');
     const res1 = await $api.get('/all');
-    console.log(res1);
     getUsers(JSON.stringify(res1.data))
 
   }
@@ -31,7 +28,6 @@ function User() {
     const res = await $api.put('/refresh');
     localStorage.setItem('token', res.data.accessToken)
     setInfo('Your token has been updated manual method')
-    console.log(res);
   }
   return (
     <div>

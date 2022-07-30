@@ -12,7 +12,6 @@ function Login() {
     e.preventDefault();
 
     const res = await $api.post('/login', { password, email });
-    console.log(res);
     if (res.data.error) {
       setInfo(res.data.message)
 
@@ -25,23 +24,17 @@ function Login() {
 
 
   const onSuccess = async (response) => {
+    const res = await $api.post('/google-login', { tokenId: response.tokenId });
+    localStorage.setItem('token', res.data.accessToken)
+    if (res.data.error) {
+      setInfo(res.data.message)
 
-    try {
-      console.log(response);
-      const res = await $api.post('/google-login', { tokenId: response.tokenId });
-      console.log();
+    } else {
+      setInfo('you enter account')
+
       localStorage.setItem('token', res.data.accessToken)
-      if (res.data.error) {
-        setInfo(res.data.message)
-
-      } else {
-        setInfo('you enter account')
-
-        localStorage.setItem('token', res.data.accessToken)
-      }
-    } catch (error) {
-      console.log(error);
     }
+
   }
   const onFailure = async (res) => {
     console.log(res);

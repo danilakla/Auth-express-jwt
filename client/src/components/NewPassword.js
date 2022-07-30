@@ -10,9 +10,8 @@ function NewPassword() {
   const token = useParams()
   const resetPassword = async (e) => {
     e.preventDefault();
-    const response = await $api.put('/passwordReset/:resetToken', { password, tokenRes: token.resetToken })
+    await $api.put('/passwordReset/:resetToken', { password, tokenRes: token.resetToken })
     setInfo('Your password has been reset, try again login in account')
-    console.log(response);
   }
 
   return (

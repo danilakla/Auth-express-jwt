@@ -1,6 +1,4 @@
 import React, { useState } from 'react'
-import { useParams } from 'react-router-dom'
-import { Link } from 'react-router-dom'
 
 import $api from '../http/axios'
 
@@ -10,9 +8,8 @@ function EmailSender() {
   const [email, getPssword] = useState('')
   const sendEmail = async (e) => {
     e.preventDefault();
-    const res = await $api.post('/forgotPassword', { email })
+   await $api.post('/forgotPassword', { email })
     setInfo('check email')
-    console.log(res);
   }
 
   return (

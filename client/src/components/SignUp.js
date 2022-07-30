@@ -1,5 +1,6 @@
 import { GoogleLogin } from 'react-google-login';
 import { useState } from 'react';
+import { gapi } from "gapi-script"
 import $api from '../http/axios'
 
 function SignUp() {
@@ -14,7 +15,6 @@ function SignUp() {
     e.preventDefault();
 
     const res = await $api.post('/registration', { password, email });
-    console.log(res);
     if (res.data.error) {
       setInfo(res.data.message)
 
@@ -29,7 +29,6 @@ function SignUp() {
   const onSuccess = async (response) => {
 
     try {
-      console.log(response);
       const res = await $api.post('/google-registration', { tokenId: response.tokenId });
       if (res.data.error) {
         setInfo(res.data.message)
