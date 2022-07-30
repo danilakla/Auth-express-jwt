@@ -4,15 +4,18 @@ const express = require('express');
 const cookieparser = require('cookie-parser');
 const cors = require('cors');
 const connectDB = require('./config/conection-db');
-const errorMiddleware = require('./middleware/error-middleware');
 const app = express();
+
+
+const errorMiddleware = require('./middleware/error-middleware');
+
+
 const routerAuth = require('./routes/authentication-router');
 const routerActivate = require('./routes/activate-router');
 const routerAuthorized = require('./routes/authorized-router');
-const midl = require('./middleware/auth-middleware')
-const roleMidl = require('./middleware/role-auth-middleware')
 const routerPayment = require('./routes/payment')
-const UserModel = require('./models/User-schema')
+const routerUser = require('./routes/user-router')
+
 app.use(express.json());
 app.use(cookieparser());
 app.use(cors({
@@ -22,25 +25,13 @@ app.use(cors({
 
 }))
 
-app.get('/api/one', midl, async (req, res, next) => {
-  const users = await UserModel.findOne({ _id: req.user.id })
-  res.json(users);
-  next();
-})
-
-
-app.get('/api/all', roleMidl(['Admin']), async (req, res, next) => {
-  const users = await UserModel.find();
-  res.json(users);
-  next();
-})
-
 
 
 app.use('/api', routerAuth);
 app.use('/api', routerActivate)
 app.use('/api', routerAuthorized)
 app.use('/api', routerPayment)
+app.use('/api', routerUser)
 
 app.use(errorMiddleware)
 
