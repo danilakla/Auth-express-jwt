@@ -7,7 +7,6 @@ const userModel = require('../models/User-schema');
 const tokenService = require('../service/token-service');
 
 const { google } = require('googleapis');
-const userDto = require('../DTO/user-payload');
 const { OAuth2 } = google.auth
 const client_id = '77144797068-s64eirkru9foga32she7mnlettoi7361.apps.googleusercontent.com'
 const CLIENT_URL = 'http://localhost:3000'
@@ -42,6 +41,22 @@ class AuthController {
       console.log(error);
       next(error);
     }
+  }
+  async activateUser(req, res, next) {
+    try {
+
+      const activationLink = req.params.linkActivate;
+
+      await authService.activateUser(activationLink);
+
+      return res.redirect('http://localhost:3000')
+    } catch (error) {
+      console.log(error);
+      next(error)
+    }
+
+
+
   }
 
   async forgotPassword(req, res, next) {

@@ -30,6 +30,18 @@ class AuthService {
     const playloadAndTokens = await tokenService.initializationTokens(user)
     return playloadAndTokens
   }
+  async activateUser(activationLink) {
+
+    const user = await userModel.findOne({ activationLink })
+
+    if (!user) {
+      throw ApiError.unAuthorizedError()
+    }
+
+    user.isActivated = true;
+    await user.save();
+    return null;
+  }
   async update(password, resetPasswordToken) {
 
     const hashToken = crypto

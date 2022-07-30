@@ -9,6 +9,9 @@ router.post('/forgotPassword', authController.forgotPassword);
 
 router.put('/passwordReset/:resetToken', authController.updatePassword)
 
+router.get('/activate/:linkActivate', authController.activateUser)
+
+
 // Social Login
 router.post('/google_login', authController.googleLogin)
 router.post('/facebook_login', authController.facebookLogin)
