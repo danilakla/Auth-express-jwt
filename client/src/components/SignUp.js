@@ -1,6 +1,5 @@
-import { GoogleLogin, GoogleLogout } from 'react-google-login';
-import { useEffect, useState } from 'react';
-import { gapi } from "gapi-script"
+import { GoogleLogin } from 'react-google-login';
+import { useState } from 'react';
 import $api from '../http/axios'
 
 function SignUp() {
