@@ -1,0 +1,28 @@
+.button {
+  /* Сбрасываем дефолтные стили */
+  border: none;
+  outline: none;
+  display: inline-block;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  font-size: 16px;
+  /* Можно также использовать любые встроенные и кастомные шрифты, например, отсюда  */
+  font-family: Roboto, Verdana, Tahoma, sans;
+  /* Тут можно поэкспериментировать */
+  padding: 12px 16px;
+  border-radius: 100px;
+  color: #fff;
+}
+.button i {
+  margin-right: 4px;
+}
+.button + .button {
+  margin-left: 6px;
+}
+.button.blue {
+  background: #2196F3;
+}
+.button.purple {
+  background: #9b59b6;
+}
