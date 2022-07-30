@@ -3,11 +3,9 @@ const authorizedService = require('../service/authorized-service');
 class AuthorizedController {
   async logoutUser(req, res, next) {
     try {
-      console.log(312);
-      console.log(req.cookies);
+
       const { refreshToken } = req.cookies;
       await authorizedService.logoutUser(refreshToken);
-
       res.clearCookie('refreshToken');
 
       res.status(200).json('success')
@@ -19,7 +17,7 @@ class AuthorizedController {
     try {
       const { refreshToken } = req.cookies;
       const userData = await authorizedService.refresh(refreshToken);
-      console.log(userData);
+
       res.cookie('refreshToken', userData.refreshToken, {
         maxAge: 30 * 24 * 60 * 60 * 1000,
         httpOnly: true

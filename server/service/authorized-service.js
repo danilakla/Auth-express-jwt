@@ -1,4 +1,3 @@
-const UserDto = require('../DTO/user-payload');
 const ApiError = require('../util/api-error');
 const tokenService = require('./token-service')
 const UserModel = require('../models/User-schema');
@@ -9,6 +8,7 @@ class AuthorizedService {
 
   }
   async refresh(refreshToken) {
+
     const userData = await tokenService.validationRefreshToken(refreshToken);
     const tokenFromDb = await tokenService.findToken(refreshToken);
 
