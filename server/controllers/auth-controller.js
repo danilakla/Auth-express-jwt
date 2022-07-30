@@ -69,12 +69,10 @@ class AuthController {
     }
   }
   async updatePassword(req, res, next) {
-    console.log(123);
     try {
 
       const { password, tokenRes } = req.body;
       const userupdate = await authService.update(password, tokenRes)
-      console.log(userupdate);
       return res.json('ok')
 
     } catch (error) {
@@ -82,43 +80,44 @@ class AuthController {
     }
   }
 
+  async googleRegistration(req, res, next) {
+    try {
+      const { tokenId } = req.body
+      const verify = await client.verifyIdToken({ idToken: tokenId, audience: client_id }) //mail 
+      const { email_verified, email } = verify.payload
+      const password = email + 'dasdas' //google 
+      if (!email_verified) return res.status(400).json({ msg: "Email verification failed." })
+
+      const userDataSignUp = await authService.registration(email, password);
+      res.cookie('refreshToken', userDataSignUp.refreshToken, {
+        maxAge: 30 * 24 * 60 * 60 * 1000, //  30 days 
+        httpOnly: true,
+      });
+      res.json(userDataSignUp);
+
+
+
+    } catch (err) {
+      return res.status(500).json({ msg: err.message })
+    }
+  }
+
+
   async googleLogin(req, res, next) {
     try {
       const { tokenId } = req.body
       const verify = await client.verifyIdToken({ idToken: tokenId, audience: client_id }) //mail 
-      console.log(0)
       const { email_verified, email } = verify.payload
-      const password = email + 'dasdas' //google secroe
-      // const passwordHash = await bcrypt.hash(password, 12)
-
+      const password = email + 'dasdas' //google 
       if (!email_verified) return res.status(400).json({ msg: "Email verification failed." })
 
-      const user = await userModel.findOne({ email }).select("+password");
+      const userDataSignUp = await authService.login(email, password);
+      res.cookie('refreshToken', userDataSignUp.refreshToken, {
+        maxAge: 30 * 24 * 60 * 60 * 1000, //  30 days 
+        httpOnly: true,
+      });
+      res.json(userDataSignUp);
 
-      if (user) {
-        console.log(123);
-        const isMatch = await user.matchPassword(password);
-        if (!isMatch) return res.status(400).json({ msg: "Password is incorrect." })
-
-        const playloadAndTokens = await tokenService.initializationTokens(user)
-
-        res.cookie('refreshToken', playloadAndTokens.refreshToken, {
-          httpOnly: true,
-          maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
-        })
-
-        res.json({ token: playloadAndTokens.accessToken })
-      } else {
-        const newUser = await userModel.create({ email, password, roles: 'User' });
-        await mailService.sendActivationOnEmail(email, `${process.env.API_URL}api/activate/${newUser.activationLink}`);
-
-        const playloadAndTokens = await tokenService.initializationTokens(newUser)
-        res.cookie('refreshToken', playloadAndTokens.refreshToken, {
-          httpOnly: true,
-          maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
-        })
-        res.json({ token: playloadAndTokens.accessToken })
-      }
 
 
     } catch (err) {
@@ -155,7 +154,6 @@ class AuthController {
         res.json({ token: playloadAndTokens.accessToken })
       } else {
         const newUser = await userModel.create({ email, password, roles: 'User' });
-        console.log(newUser);
         const playloadAndTokens = await tokenService.initializationTokens(newUser)
         res.cookie('refreshtoken', playloadAndTokens.refreshToken, {
           httpOnly: true,

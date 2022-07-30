@@ -1,7 +1,7 @@
 import React from 'react'
 import { Routes, Route } from 'react-router-dom'
 import EmailSender from './EmailForRestPassword';
-import SignIn from './SignIn'
+import SignUp from './SignUp'
 import NewPassword from './NewPassword';
 import Login from './login';
 import User from './User';
@@ -10,7 +10,7 @@ function Body() {
   return (
     <div>
       <Routes>
-        <Route path="/" element={<SignIn />} />
+        <Route path="/" element={<SignUp />} />
         <Route path="/login" element={<Login />} />
         <Route path="/userInterface" element={<User />} />
         <Route path="/successPayment" element={< SuccessPayment />} />

@@ -8,7 +8,7 @@ function NavBar() {
   return (
     <div>
       <ul>
-        <li> <Link to="/"> Sign In</Link></li>
+        <li> <Link to="/"> Sign Up</Link></li>
         <li> <Link to="/login"> Login</Link></li>
         <li> <Link to="/userInterface"> For authorized users</Link></li>
       </ul>

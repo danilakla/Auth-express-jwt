@@ -5,7 +5,6 @@ module.exports = function (authorizationHeader) {
     throw ApiError.unAuthorizedError()
 
   }
-  console.log(1);
   const accessToken = authorizationHeader.split(' ')[1]
   if (!accessToken) {
     throw ApiError.unAuthorizedError()
