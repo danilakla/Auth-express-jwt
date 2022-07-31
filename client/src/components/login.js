@@ -28,7 +28,6 @@ function Login() {
     localStorage.setItem('token', res.data.accessToken)
     if (res.data.error) {
       setInfo(res.data.message)
-
     } else {
       setInfo('you enter account')
 

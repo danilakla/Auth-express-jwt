@@ -17,10 +17,8 @@ function SignUp() {
     const res = await $api.post('/registration', { password, email });
     if (res.data.error) {
       setInfo(res.data.message)
-
     } else {
       setInfo('you enter account')
-
       localStorage.setItem('token', res.data.accessToken)
     }
 
@@ -28,29 +26,21 @@ function SignUp() {
 
   const onSuccess = async (response) => {
 
-    try {
-      const res = await $api.post('/google-registration', { tokenId: response.tokenId });
-      if (res.data.error) {
-        setInfo(res.data.message)
-
-      } else {
-        setInfo('you enter account')
-
-        localStorage.setItem('token', res.data.accessToken)
-      }
-    } catch (error) {
-      console.log(error);
+    const res = await $api.post('/google-registration', { tokenId: response.tokenId });//
+    if (res.data.error) {
+      setInfo(res.data.message)
+    } else {
+      setInfo('you enter account')
+      localStorage.setItem('token', res.data.accessToken)
     }
+
   }
-  const onFailure = async (res) => {
-    console.log(res);
-  }
+
 
   return (
     <div id='sighInButton'>
-      SIGN UP
+      <h1>SIGN UP</h1>
       <form>
-
         <label >
           email:
           <input value={email} type="text" name="email" onChange={(e) => getName(e.target.value)} />
@@ -67,7 +57,7 @@ function SignUp() {
 
       <GoogleLogin clientId='77144797068-s64eirkru9foga32she7mnlettoi7361.apps.googleusercontent.com'
         onSuccess={onSuccess}
-        onFailure={onFailure}>Sign up with Google</GoogleLogin>
+      >Sign up with Google</GoogleLogin>
       <br></br>
       <h2>{helpInfo}</h2>
 
