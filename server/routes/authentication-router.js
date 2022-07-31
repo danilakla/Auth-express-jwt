@@ -13,15 +13,15 @@ router.post('/login',
   body('password').isLength({ min: 3, max: 32 }),
   authController.login)
 
-router.post('/forgotPassword',
+router.post('/forgot-password',
   body('email').isEmail(),
   authController.forgotPassword);
 
-router.put('/passwordReset/:resetToken',
+router.put('/reset-password/:resetToken',
   body('password').isLength({ min: 3, max: 32 }),
   authController.updatePassword)
 
-router.get('/activate/:linkActivate', authController.activateUser)
+router.get('/verify-email/:linkActivate', authController.activateUser)
 
 
 // Social Login

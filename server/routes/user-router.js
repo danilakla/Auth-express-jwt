@@ -4,10 +4,10 @@ const userController = require('../controllers/user-controller')
 
 const router = require('express').Router();
 
-router.get('/one', authMiddleware, userController.getUser)
+router.get('/user/one', authMiddleware, userController.getUser)
 
 
-router.get('/all', roleAuthMiddleware(['Admin']), userController.getUsers)
+router.get('/user/all', roleAuthMiddleware(['Admin']), userController.getUsers)
 
 
 module.exports = router;

@@ -13,7 +13,7 @@ function User() {
 
   //information about user
   const testGetUser = async () => {
-    const res = await $api.get('/one');
+    const res = await $api.get('/user/one');
     if (res.data.error) {
       getUsers(res.data.message)
     } else {
@@ -22,7 +22,7 @@ function User() {
   }
 
   const testGetUsers = async () => {
-    const res = await $api.get('/all');
+    const res = await $api.get('/user/all');
     if (res.data.error) {
       getUsers(res.data.message)
     } else {

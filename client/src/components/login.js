@@ -41,19 +41,23 @@ function Login() {
 
   return (
     <div>
-      LOGIN
+      <h1>LOGIN</h1>
       <form>
 
         <label >
           email:
           <input value={email} type="text" name="email" onChange={(e) => getName(e.target.value)} />
         </label>
+
         <div></div>
+
         <label >
           password
           <input type="text" name="password" value={password} onChange={(e) => getPssword(e.target.value)} />
 
-          <div></div>        </label>      <Link to="/login/sendEmail">Forgot your password?</Link>
+          <div></div>
+
+        </label><Link to="/login/sendEmail">Forgot your password?</Link>
 
         <h2>{helpInfo}</h2>
         <div></div>

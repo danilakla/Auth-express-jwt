@@ -1,8 +1,8 @@
 import React from 'react'
 import { Routes, Route } from 'react-router-dom'
-import EmailSender from './EmailForRestPassword';
+import ForgotPassword from './ForgotPassword';
 import SignUp from './SignUp'
-import NewPassword from './NewPassword';
+import ResetPassword from './ResetPassword';
 import Login from './login';
 import User from './User';
 import SuccessPayment from './PaySuccess';
@@ -14,9 +14,9 @@ function Body() {
         <Route path="/login" element={<Login />} />
         <Route path="/userInterface" element={<User />} />
         <Route path="/successPayment" element={< SuccessPayment />} />
-
-        <Route path="/login/:resetToken" element={<NewPassword />} />
-        <Route path="/login/sendEmail" element={<EmailSender />} />
+        
+        <Route path="/login/:resetToken" element={<ResetPassword />} />
+        <Route path="/login/sendEmail" element={<ForgotPassword />} />
 
       </Routes>
     </div>

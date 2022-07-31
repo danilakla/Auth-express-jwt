@@ -40,12 +40,15 @@ function SignUp() {
   return (
     <div id='sighInButton'>
       <h1>SIGN UP</h1>
+
       <form>
+
         <label >
           email:
           <input value={email} type="text" name="email" onChange={(e) => getName(e.target.value)} />
         </label>
         <div></div>
+
         <label >
           password
           <input type="text" name="password" value={password} onChange={(e) => getPssword(e.target.value)} />
@@ -56,9 +59,12 @@ function SignUp() {
       </form>
 
       <GoogleLogin clientId='77144797068-s64eirkru9foga32she7mnlettoi7361.apps.googleusercontent.com'
-        onSuccess={onSuccess}
-      >Sign up with Google</GoogleLogin>
+        onSuccess={onSuccess} >
+        Sign up with Google
+      </GoogleLogin>
+
       <br></br>
+
       <h2>{helpInfo}</h2>
 
     </div >

@@ -5,12 +5,17 @@ const mailService = require('./mail-service');
 const crypto = require('crypto');
 class AuthService {
   async registration(email, password) {
-    const candidate = await userModel.findOne({ email });
-    if (candidate) {
+    const emailAlreadyExists = await userModel.findOne({ email });
+    if (emailAlreadyExists) {
       throw ApiError.badRequestError('user with such email already exists')
     }
-    const user = await userModel.create({ email, password, roles: "User" });
-    await mailService.sendActivationOnEmail(email, `${process.env.API_URL}api/activate/${user.activationLink}`);
+
+    // first registered user is an admin
+    const isFirstAccount = (await userModel.countDocuments({})) === 0;
+    const role = isFirstAccount ? 'Admin' : 'User';
+
+    const user = await userModel.create({ email, password, roles: role });
+    await mailService.sendActivationOnEmail(email, `${process.env.API_URL}api/verify-email/${user.activationLink}`);
     const playloadAndTokens = await tokenService.initializationTokens(user)
     return playloadAndTokens
   }
@@ -22,9 +27,9 @@ class AuthService {
     if (!user) {
       throw ApiError.badRequestError('user with such email does not found')
     }
-    const isMatch = await user.matchPassword(password);
+    const isPasswordCorrect = await user.matchPassword(password);
 
-    if (!isMatch) {
+    if (!isPasswordCorrect) {
       throw ApiError.badRequestError('password does not match');
     }
     const playloadAndTokens = await tokenService.initializationTokens(user)
@@ -64,12 +69,12 @@ class AuthService {
     return user;
   }
   async getResetTokenPassword(email) {
-    const candidate = await userModel.findOne({ email })
-    if (!candidate) {
+    const user = await userModel.findOne({ email })
+    if (!user) {
       throw ApiError.badRequestError('user with such email does not found')
     }
-    const resetToken = await candidate.getResetTokenPassword()
-    await candidate.save();
+    const resetToken = await user.getResetTokenPassword()
+    await user.save();
     await mailService.sendActivationOnEmail(email, `${process.env.HOST_CLIENT}login/${resetToken}`);
 
     return resetToken
