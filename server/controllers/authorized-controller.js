@@ -1,4 +1,5 @@
 const authorizedService = require('../service/authorized-service');
+const ApiError = require('../util/api-error')
 
 class AuthorizedController {
   async logoutUser(req, res, next) {
@@ -16,6 +17,9 @@ class AuthorizedController {
   async refresh(req, res, next) {
     try {
       const { refreshToken } = req.cookies;
+      if (!refreshToken) {
+        throw ApiError.badRequestError('not founded refresh token, pls log in again')
+      }
       const userData = await authorizedService.refresh(refreshToken);
 
       res.cookie('refreshToken', userData.refreshToken, {
