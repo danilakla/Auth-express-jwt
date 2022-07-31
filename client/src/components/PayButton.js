@@ -1,11 +1,10 @@
-import React, { useState } from 'react'
+import React from 'react'
 
 import $api from '../http/axios'
 import "./css/buttonForPay.css"
 function PayButton(bdGoods) {
 
 
-  const [helpInfo, setInfo] = useState('')
 
 
 
@@ -14,9 +13,7 @@ function PayButton(bdGoods) {
       cartItems: bdGoods.cartItems,
       userId: '62e3aca00be38eff3a124473'
     })
-    if (res.data.error) {
-      setInfo('You are not authorized');
-    }
+
     if (res.data.url) {
       window.open(`${res.data.url.url}`);
     }
@@ -32,7 +29,7 @@ function PayButton(bdGoods) {
         <i class="fa fa-unlock"></i>
         <span>Payment you orders</span>
       </button>
-      {helpInfo}
+
     </div >
   )
 }

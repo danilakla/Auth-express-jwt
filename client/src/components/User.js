@@ -2,52 +2,49 @@ import React, { useState } from 'react'
 import $api from '../http/axios'
 import PayButton from './PayButton'
 import margine from './css/margine'
+import { useNavigate } from 'react-router-dom'
+
 function User() {
   const bdGoods = {
     id: 1,
     name: 'phone',
     price: 200
   }
+
+  const navigate = useNavigate()
   const [users, getUsers] = useState('')
   const [helpInfo, setInfo] = useState('')
 
   //information about user
   const testGetUser = async () => {
     const res = await $api.get('/user/one');
-    if (res.data.error) {
-      getUsers(res.data.message)
-    } else {
-      getUsers(JSON.stringify(res.data))
-    }
+
+    getUsers(JSON.stringify(res.data))
+
   }
 
   const testGetUsers = async () => {
     const res = await $api.get('/user/all');
-    if (res.data.error) {
-      getUsers(res.data.message)
-    } else {
-      getUsers(JSON.stringify(res.data))
-    }
+
+    getUsers(JSON.stringify(res.data))
+
   }
 
   //user capabilities
   const logout = async () => {
-    const res = await $api.delete('/logout');
-    if (res.data.error) {
-      setInfo(res.data.message);
-    } else {
-      localStorage.removeItem('token')
-    }
+    await $api.delete('/logout');
+
+    localStorage.removeItem('token')
+    navigate('/login')
+
   }
 
   const updataToken = async () => {
     const res = await $api.put('/refresh');
-    if (res.data.error) {
-      setInfo(res.data.message);
-    } else {
-      localStorage.setItem('token', res.data.accessToken)
-      setInfo('Your token has been updated manual method')
-    }
+
+    localStorage.setItem('token', res.data.accessToken)
+    setInfo('Your token has been updated manual method')
+
   }
 
 

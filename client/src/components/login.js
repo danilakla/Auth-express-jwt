@@ -1,38 +1,30 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { GoogleLogin } from 'react-google-login';
+import { useNavigate } from 'react-router-dom'
 
 import $api from '../http/axios'
 function Login() {
-  const [helpInfo, setInfo] = useState('')
 
   const [password, getPssword] = useState('')
   const [email, getName] = useState('')
+  const navigate = useNavigate();
+
   const login = async (e) => {
     e.preventDefault();
 
     const res = await $api.post('/login', { password, email });
-    if (res.data.error) {
-      setInfo(res.data.message)
-
-    } else {
-      setInfo('you enter account')
-
-      localStorage.setItem('token', res.data.accessToken)
-    }
+    localStorage.setItem('token', res.data.accessToken)
+    navigate('/userInterface')
   }
 
 
   const onSuccess = async (response) => {
     const res = await $api.post('/google-login', { tokenId: response.tokenId });
     localStorage.setItem('token', res.data.accessToken)
-    if (res.data.error) {
-      setInfo(res.data.message)
-    } else {
-      setInfo('you enter account')
+    navigate('/userInterface')
 
-      localStorage.setItem('token', res.data.accessToken)
-    }
+
 
   }
   const onFailure = async (res) => {
@@ -59,7 +51,6 @@ function Login() {
 
         </label><Link to="/login/sendEmail">Forgot your password?</Link>
 
-        <h2>{helpInfo}</h2>
         <div></div>
 
         <input type="submit" value="Submit" onClick={(e) => login(e)} />
@@ -68,6 +59,7 @@ function Login() {
         onSuccess={onSuccess}
         onFailure={onFailure} />
       <div ></div>
+      <p>If your account is login on the website, you will be redirected to the interface (there you can get a user, as well as pay for the purchase)</p>
 
     </div >
   )

@@ -2,37 +2,34 @@ import { GoogleLogin } from 'react-google-login';
 import { useState } from 'react';
 import { gapi } from "gapi-script"
 import $api from '../http/axios'
+import { useNavigate } from 'react-router-dom'
 
 function SignUp() {
 
-  const [email, getName] = useState('')
-  const [password, getPssword] = useState('')
-  const [helpInfo, setInfo] = useState('')
-
+  const [email, getName] = useState('');
+  const [password, getPssword] = useState('');
+  const navigate = useNavigate();
 
 
   const registration = async (e) => {
     e.preventDefault();
 
     const res = await $api.post('/registration', { password, email });
-    if (res.data.error) {
-      setInfo(res.data.message)
-    } else {
-      setInfo('you enter account')
-      localStorage.setItem('token', res.data.accessToken)
-    }
+
+    localStorage.setItem('token', res.data.accessToken)
+    navigate('/userInterface')
+
 
   }
 
   const onSuccess = async (response) => {
 
     const res = await $api.post('/google-registration', { tokenId: response.tokenId });//
-    if (res.data.error) {
-      setInfo(res.data.message)
-    } else {
-      setInfo('you enter account')
-      localStorage.setItem('token', res.data.accessToken)
-    }
+
+    localStorage.setItem('token', res.data.accessToken)
+    navigate('/userInterface')
+
+
 
   }
 
@@ -63,9 +60,7 @@ function SignUp() {
         Sign up with Google
       </GoogleLogin>
 
-      <br></br>
-
-      <h2>{helpInfo}</h2>
+      <p>If your account is registered on the website, you will be redirected to the interface (there you can get a user, as well as pay for the purchase)</p>
 
     </div >
   )
