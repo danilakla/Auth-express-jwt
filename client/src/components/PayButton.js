@@ -25,8 +25,8 @@ function PayButton(bdGoods) {
   return (
     <div>
 
-      <button onClick={() => handleCheckout()} id="login" class="button blue">
-        <i class="fa fa-unlock"></i>
+      <button onClick={() => handleCheckout()} id="login" className="button blue">
+        <i className="fa fa-unlock"></i>
         <span>Payment you orders</span>
       </button>
 

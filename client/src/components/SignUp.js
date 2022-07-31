@@ -18,19 +18,15 @@ function SignUp() {
       e.preventDefault();
 
       const res = await $api.post('/registration', { password, email });
-      if (res !== undefined) {
-        console.log(res);
 
-        localStorage.setItem('token', res.data.accessToken)
+      localStorage.setItem('token', res.data.accessToken)
 
-        navigate('/userInterface')
-      } else {
-        setInfo('A user already exist or Invalid data');
-
-      }
+      navigate('/userInterface')
 
 
     } catch (error) {
+      setInfo('A user already exist or Invalid data');
+
       console.log(error);
 
     }
