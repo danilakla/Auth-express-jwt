@@ -15,7 +15,7 @@ class TokenService {
   }
   //skartuzov5
   async generateTokens(payLoad) {
-    const accessToken = jwt.sign(payLoad, process.env.JWT_ACCESS_SECRET, { expiresIn: '10s' })
+    const accessToken = jwt.sign(payLoad, process.env.JWT_ACCESS_SECRET, { expiresIn: '1d' })
     const refreshToken = jwt.sign(payLoad, process.env.JWT_REFRESH_SECRET, { expiresIn: '30d' })
     return {
       accessToken,
