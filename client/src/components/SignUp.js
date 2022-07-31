@@ -2,13 +2,14 @@ import { GoogleLogin } from 'react-google-login';
 import { useState } from 'react';
 import { gapi } from "gapi-script"
 import $api from '../http/axios'
+import { useNavigate } from 'react-router-dom'
 
 function SignUp() {
 
   const [email, getName] = useState('')
   const [password, getPssword] = useState('')
   const [helpInfo, setInfo] = useState('')
-
+  const navigate = useNavigate();
 
 
   const registration = async (e) => {
@@ -27,12 +28,11 @@ function SignUp() {
   const onSuccess = async (response) => {
 
     const res = await $api.post('/google-registration', { tokenId: response.tokenId });//
-    if (res.data.error) {
-      setInfo(res.data.message)
-    } else {
-      setInfo('you enter account')
-      localStorage.setItem('token', res.data.accessToken)
-    }
+
+    localStorage.setItem('token', res.data.accessToken)
+    navigate('/userInterface')
+
+
 
   }
 
