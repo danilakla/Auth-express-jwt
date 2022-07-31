@@ -8,8 +8,14 @@ function EmailSender() {
   const [email, getPssword] = useState('')
   const sendEmail = async (e) => {
     e.preventDefault();
-   await $api.post('/forgotPassword', { email })
-    setInfo('check email')
+    const res = await $api.post('/forgotPassword', { email })
+    if (res.data.error) {
+      setInfo(res.data.message)
+
+    } else {
+      setInfo('check email')
+
+    }
   }
 
   return (

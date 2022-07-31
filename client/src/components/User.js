@@ -12,22 +12,41 @@ function User() {
 
   const testGetUser = async () => {
     const res2 = await $api.get('/one');
-    getUsers(JSON.stringify(res2.data))
+    if (res2.data.error) {
+      getUsers(res2.data.message)
+    } else {
+      getUsers(JSON.stringify(res2.data))
+
+    }
 
   }
   const testGetUsers = async () => {
     const res1 = await $api.get('/all');
-    getUsers(JSON.stringify(res1.data))
+    if (res1.data.error) {
+      getUsers(res1.data.message)
+    } else {
+      getUsers(JSON.stringify(res1.data))
+
+    }
 
   }
   const logout = async () => {
-    await $api.delete('/logout');
-    localStorage.removeItem('token')
+    const res = await $api.delete('/logout');
+    if (res.data.error) {
+      setInfo('You are not authorized');
+    } else {
+      localStorage.removeItem('token')
+
+    }
   }
   const updataToken = async () => {
     const res = await $api.put('/refresh');
-    localStorage.setItem('token', res.data.accessToken)
-    setInfo('Your token has been updated manual method')
+    if (res.data.error) {
+      setInfo('You are not authorized');
+    } else {
+      localStorage.setItem('token', res.data.accessToken)
+      setInfo('Your token has been updated manual method')
+    }
   }
   return (
     <div>

@@ -9,7 +9,7 @@ module.exports = class ApiError extends Error {
   }
 
   static unAuthorizedError() {
-    return new ApiError(401, "You are not authorized to access this API.");
+    return new ApiError(401, "You do not have sufficient rights or are not authorized");
 
   }
   static badRequestError(message, errors = []) {

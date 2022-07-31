@@ -60,6 +60,11 @@ class AuthController {
 
   async forgotPassword(req, res, next) {
     try {
+
+      if (!validationBody(req)) {
+        res.json({ message: 'invalid data', error: true });
+      }
+
       const { email } = req.body;
       const resetTokenPassword = await authService.getResetTokenPassword(email);
       res.json(resetTokenPassword)
@@ -70,8 +75,14 @@ class AuthController {
   async updatePassword(req, res, next) {
     try {
 
-      const { password, tokenRes } = req.body;
-      await authService.update(password, tokenRes)
+      if (!validationBody(req)) {
+        res.json({ message: 'invalid data', error: true });
+      }
+
+      const resetToken = req.params.resetToken
+      console.log(resetToken);
+      const { password } = req.body;
+      await authService.update(password, resetToken)
       return res.json('ok')
 
     } catch (error) {

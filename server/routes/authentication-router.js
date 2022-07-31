@@ -10,12 +10,16 @@ router.post('/registration',
 
 router.post('/login',
   body('email').isEmail(),
-  body('password').isLength({ min: 3, max: 32 })
-  , authController.login)
+  body('password').isLength({ min: 3, max: 32 }),
+  authController.login)
 
-router.post('/forgotPassword', authController.forgotPassword);
+router.post('/forgotPassword',
+  body('email').isEmail(),
+  authController.forgotPassword);
 
-router.put('/passwordReset/:resetToken', authController.updatePassword)
+router.put('/passwordReset/:resetToken',
+  body('password').isLength({ min: 3, max: 32 }),
+  authController.updatePassword)
 
 router.get('/activate/:linkActivate', authController.activateUser)
 
