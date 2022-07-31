@@ -8,22 +8,38 @@ function Login() {
 
   const [password, getPssword] = useState('')
   const [email, getName] = useState('')
+  const [errorInfo, setInfo] = useState('');
+
   const navigate = useNavigate();
 
   const login = async (e) => {
-    e.preventDefault();
+    try {
+      e.preventDefault();
 
-    const res = await $api.post('/login', { password, email });
-    localStorage.setItem('token', res.data.accessToken)
-    navigate('/userInterface')
+      const res = await $api.post('/login', { password, email });
+      localStorage.setItem('token', res.data.accessToken)
+      navigate('/userInterface')
+
+    } catch (error) {
+      setInfo('A user already exist or Invalid data');
+
+    }
+
   }
 
 
   const onSuccess = async (response) => {
-    const res = await $api.post('/google-login', { tokenId: response.tokenId });
-    localStorage.setItem('token', res.data.accessToken)
-    navigate('/userInterface')
 
+    try {
+
+      const res = await $api.post('/google-login', { tokenId: response.tokenId });
+      localStorage.setItem('token', res.data.accessToken)
+      navigate('/userInterface')
+
+    } catch (error) {
+      setInfo('A user already exist or Invalid data');
+
+    }
 
 
   }
@@ -58,7 +74,7 @@ function Login() {
       <GoogleLogin clientId='77144797068-s64eirkru9foga32she7mnlettoi7361.apps.googleusercontent.com'
         onSuccess={onSuccess}
         onFailure={onFailure} />
-      <div ></div>
+      <h2 >{errorInfo}</h2>
       <p>If your account is login on the website, you will be redirected to the interface (there you can get a user, as well as pay for the purchase)</p>
 
     </div >

@@ -17,16 +17,27 @@ function User() {
 
   //information about user
   const testGetUser = async () => {
-    const res = await $api.get('/user/one');
+    try {
+      const res = await $api.get('/user/one');
 
-    getUsers(JSON.stringify(res.data))
+      getUsers(JSON.stringify(res.data))
+    } catch (error) {
+      setInfo('You are not log in');
+    }
+
 
   }
 
   const testGetUsers = async () => {
-    const res = await $api.get('/user/all');
+    try {
+      const res = await $api.get('/user/all');
 
-    getUsers(JSON.stringify(res.data))
+      getUsers(JSON.stringify(res.data))
+    } catch (error) {
+      getUsers('')
+      setInfo("You aren't Admin")
+    }
+
 
   }
 

@@ -1,6 +1,6 @@
 const authService = require('../service/auth-service');
 const validationBody = require('../util/validation-body')
-
+const ApiError = require('../util/api-error')
 ////////////////////////////////////////////////////////////////////////
 const { google } = require('googleapis');
 const { OAuth2 } = google.auth
@@ -13,7 +13,7 @@ class AuthController {
   async registration(req, res, next) {
     try {
       if (!validationBody(req)) {
-        res.json({ message: 'invalid data', error: true });
+        throw ApiError.badRequestError('invalid data');
       }
 
       const { email, password } = req.body;
@@ -27,7 +27,7 @@ class AuthController {
   async login(req, res, next) {
     try {
       if (!validationBody(req)) {
-        res.json({ message: 'invalid data', error: true });
+        throw ApiError.badRequestError('invalid data');
       }
       const { email, password } = req.body;
       const userData = await authService.login(email, password);
@@ -60,15 +60,16 @@ class AuthController {
 
   async forgotPassword(req, res, next) {
     try {
-
       if (!validationBody(req)) {
-        res.json({ message: 'invalid data', error: true });
-      }
 
+        throw ApiError.badRequestError('invalid data');
+
+      }
       const { email } = req.body;
       const resetTokenPassword = await authService.getResetTokenPassword(email);
       res.json(resetTokenPassword)
     } catch (error) {
+
       next(error);
     }
   }
@@ -76,7 +77,7 @@ class AuthController {
     try {
 
       if (!validationBody(req)) {
-        res.json({ message: 'invalid data', error: true });
+        throw ApiError.badRequestError('invalid data');
       }
 
       const resetToken = req.params.resetToken
@@ -86,6 +87,7 @@ class AuthController {
       return res.json('ok')
 
     } catch (error) {
+      console.log(error);
       next(error);
     }
   }

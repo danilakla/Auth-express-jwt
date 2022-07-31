@@ -3,19 +3,31 @@ import React, { useState } from 'react'
 import $api from '../http/axios'
 
 function ForgotPassword() {
-  const [helpInfo, setInfo] = useState('')
 
   const [email, getPssword] = useState('')
+  const [helpInfo, setInfo] = useState('')
+
   const sendEmail = async (e) => {
-    e.preventDefault();
-    const res = await $api.post('/forgot-password', { email })
-    if (res.data.error) {
-      setInfo(res.data.message)
 
-    } else {
-      setInfo('check email')
+    try {
 
+      e.preventDefault();
+
+      const res = await $api.post('/forgot-password', { email })
+      if (res !== undefined) {
+        setInfo('Check email')
+      }
+      else {
+        setInfo('The user with this email address was not found')
+
+      }
+
+
+
+    } catch (error) {
+      console.log(error);
     }
+
   }
 
   return (
