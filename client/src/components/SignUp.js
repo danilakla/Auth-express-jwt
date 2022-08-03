@@ -81,6 +81,7 @@ function SignUp() {
         Sign up with Google
       </GoogleLogin>
       <h2>{errorInfo}</h2>
+      <h1>the first registration user will be admin</h1>
       <p>If your account is registered on the website, you will be redirected to the interface (there you can get a user, as well as pay for the purchase)</p>
 
     </div >
